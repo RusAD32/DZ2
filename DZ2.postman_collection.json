@@ -1,0 +1,205 @@
+{
+	"info": {
+		"_postman_id": "fafc1d7e-d4b2-4c96-97f7-f471e8e82046",
+		"name": "DZ2",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "REGISTER",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"admin\",\n    \"password\": \"Admin1\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/register",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "LOGIN",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"admin\",\n    \"password\": \"Admin1\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/auth",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"auth"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET all cars",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbiI6dHJ1ZSwiZXhwIjoxNjE2ODgzOTAzLCJuYW1lIjoiYWRtaW4ifQ.-9dZ_4fzMth9pzuo1l444J444PUZaNnCmQvD8w-5Qq0",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:8080/stock",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"stock"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET one car",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbiI6dHJ1ZSwiZXhwIjoxNjE2ODgzOTAzLCJuYW1lIjoiYWRtaW4ifQ.-9dZ_4fzMth9pzuo1l444J444PUZaNnCmQvD8w-5Qq0"
+					}
+				],
+				"url": {
+					"raw": "localhost:8080/auto/BMW",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"auto",
+						"BMW"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE car",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbiI6dHJ1ZSwiZXhwIjoxNjE2ODgzOTAzLCJuYW1lIjoiYWRtaW4ifQ.-9dZ_4fzMth9pzuo1l444J444PUZaNnCmQvD8w-5Qq0"
+					}
+				],
+				"url": {
+					"raw": "localhost:8080/auto/BMW",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"auto",
+						"BMW"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST car",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbiI6dHJ1ZSwiZXhwIjoxNjE2ODgzOTAzLCJuYW1lIjoiYWRtaW4ifQ.-9dZ_4fzMth9pzuo1l444J444PUZaNnCmQvD8w-5Qq0",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{    \n    \"max_speed\" : 280,    \n    \"distance\" : 400,    \n    \"handler\" : \"BMW Motors\",    \n    \"stock\" : \"Germany\"\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/auto/BMW",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"auto",
+						"BMW"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT car",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbiI6dHJ1ZSwiZXhwIjoxNjE2ODgzOTAzLCJuYW1lIjoiYWRtaW4ifQ.-9dZ_4fzMth9pzuo1l444J444PUZaNnCmQvD8w-5Qq0",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{    \n    \"max_speed\" : 250,    \n    \"distance\" : 500,    \n    \"handler\" : \"BMW Motors\",    \n    \"stock\" : \"Germany\"\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/auto/BMW",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"auto",
+						"BMW"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
