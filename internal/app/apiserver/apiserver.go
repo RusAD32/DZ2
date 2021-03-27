@@ -57,25 +57,25 @@ func (s *APIServer) configureLogger() error {
 
 //func for configure Router
 func (s *APIServer) configureRouter() {
-	s.router.Handle(prefix+"/stock", middleware.JwtMiddleware.Handler(
+	s.router.Handle("/stock", middleware.JwtMiddleware.Handler(
 		http.HandlerFunc(s.GetStock),
 	)).Methods("GET")
-	s.router.Handle(prefix+"/auto/{mark}", middleware.JwtMiddleware.Handler(
+	s.router.Handle("/auto/{mark}", middleware.JwtMiddleware.Handler(
 		http.HandlerFunc(s.GetArticleById),
 	)).Methods("GET")
 	//
-	s.router.Handle(prefix+"/auto/{mark}", middleware.JwtMiddleware.Handler(
+	s.router.Handle("/auto/{mark}", middleware.JwtMiddleware.Handler(
 		http.HandlerFunc(s.DeleteArticleById),
 	)).Methods("DELETE")
-	s.router.Handle(prefix+"/auto/{mark}", middleware.JwtMiddleware.Handler(
+	s.router.Handle("/auto/{mark}", middleware.JwtMiddleware.Handler(
 		http.HandlerFunc(s.PostCar),
 	)).Methods("POST")
-	s.router.Handle(prefix+"/auto/{mark}", middleware.JwtMiddleware.Handler(
-		http.HandlerFunc(s.PostCar),
+	s.router.Handle("/auto/{mark}", middleware.JwtMiddleware.Handler(
+		http.HandlerFunc(s.PutCar),
 	)).Methods("PUT")
-	s.router.HandleFunc(prefix+"/register", s.PostUserRegister).Methods("POST")
+	s.router.HandleFunc("/register", s.PostUserRegister).Methods("POST")
 	//new pair for auth
-	s.router.HandleFunc(prefix+"/auth", s.PostToAuth).Methods("POST")
+	s.router.HandleFunc("/auth", s.PostToAuth).Methods("POST")
 }
 
 //configureDealership method

@@ -25,6 +25,7 @@ func New(config *Config) *Store {
 //Open store method
 func (s *Store) Open() error {
 	db, err := sql.Open("postgres", s.config.DatabaseURL)
+	log.Println(s.config.DatabaseURL)
 	if err != nil {
 		return err
 	}

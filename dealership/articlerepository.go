@@ -1,6 +1,7 @@
 package dealership
 
 import (
+	"database/sql"
 	"fmt"
 	"log"
 
@@ -12,78 +13,102 @@ type ArticleRepository struct {
 }
 
 var (
-	tableArticle string = "cars"
+	carTebleName string = "cars"
 )
 
 //For Post request
-func (ar *ArticleRepository) Create(a *models.Car) (*models.Car, bool, error) {
-	_, found, err := ar.FindArticleById(a.Mark)
+func (cr *ArticleRepository) Create(a *models.Car) (*models.Car, bool, error) {
+	_, found, err := cr.FindCarById(a.Mark)
 	if err != nil {
 		return nil, false, err
 	}
 	if found { // don't create cars if we already have one
 		return nil, false, nil
 	}
-	query := fmt.Sprintf("INSERT INTO %s (mark, max_speed, distance, handler, stock) VALUES ($1, $2, $3, $4, $5)", tableArticle)
-	if err := ar.store.db.QueryRow(query, a.Mark, a.MaxSpeed, a.Distance, a.Handler, a.Stock).Scan(); err != nil {
+	query := fmt.Sprintf("INSERT INTO %s (mark, max_speed, distance, handler, stock) VALUES ($1, $2, $3, $4, $5)", carTebleName)
+	rows, err := cr.store.db.Query(query, a.Mark, a.MaxSpeed, a.Distance, a.Handler, a.Stock)
+	if err != nil {
 		return nil, false, err
 	}
+	defer rows.Close()
+	return a, true, nil
+}
+
+//For Put request
+func (cr *ArticleRepository) Update(a *models.Car) (*models.Car, bool, error) {
+	_, found, err := cr.FindCarById(a.Mark)
+	if err != nil {
+		return nil, false, err
+	}
+	if !found { // don't update cars we don't have
+		return nil, false, nil
+	}
+	query := fmt.Sprintf("UPDATE %s SET max_speed=$2, distance=$3, handler=$4, stock=$5 WHERE mark=$1", carTebleName)
+	rows, err := cr.store.db.Query(query, a.Mark, a.MaxSpeed, a.Distance, a.Handler, a.Stock)
+	if err != nil {
+		return nil, false, err
+	}
+	defer rows.Close()
 	return a, true, nil
 }
 
 //For DELETE request
-func (ar *ArticleRepository) DeleteById(mark string) (*models.Car, error) {
-	article, ok, err := ar.FindArticleById(mark)
+func (cr *ArticleRepository) DeleteById(mark string) (*models.Car, bool, error) {
+	article, ok, err := cr.FindCarById(mark)
 	if err != nil {
-		return nil, err
+		return nil, false, err
 	}
 	if ok {
-		query := fmt.Sprintf("delete from %s where mark=$1", tableArticle)
-		_, err = ar.store.db.Exec(query, mark)
+		query := fmt.Sprintf("delete from %s where mark=$1", carTebleName)
+		_, err = cr.store.db.Exec(query, mark)
 		if err != nil {
-			return nil, err
+			return nil, false, err
 		}
 	}
 
-	return article, nil
+	return article, ok, nil
 }
 
 //Helper for Delete by id and GET by id request
-func (ar *ArticleRepository) FindArticleById(id string) (*models.Car, bool, error) {
-	articles, err := ar.SelectAll()
-	founded := false
-	if err != nil {
-		return nil, founded, err
+func (cr *ArticleRepository) FindCarById(mark string) (*models.Car, bool, error) {
+	car, err := cr.SelectOne(mark)
+	if err == sql.ErrNoRows {
+		return nil, false, nil
+	} else if err != nil {
+		return nil, false, err
 	}
-	var articleFinded *models.Car
-	for _, a := range articles {
-		if a.ID == id {
-			articleFinded = a
-			founded = true
-		}
-	}
-
-	return articleFinded, founded, nil
-
+	return car, true, nil
 }
 
 //Get all request and helper for FindByID
-func (ar *ArticleRepository) SelectAll() ([]*models.Car, error) {
-	query := fmt.Sprintf("SELECT * FROM %s", tableArticle)
-	rows, err := ar.store.db.Query(query)
+func (cr *ArticleRepository) SelectAll() ([]*models.Car, error) {
+	query := fmt.Sprintf("SELECT * FROM %s", carTebleName)
+	rows, err := cr.store.db.Query(query)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	articles := make([]*models.Car, 0)
+	cars := make([]*models.Car, 0)
 	for rows.Next() {
 		a := models.Car{}
-		err := rows.Scan(&a.ID, &a.Title, &a.Author, &a.Content)
+		err := rows.Scan(&a.Mark, &a.MaxSpeed, &a.Distance, &a.Handler, &a.Stock)
 		if err != nil {
 			log.Println(err)
 			continue
 		}
-		articles = append(articles, &a)
+		cars = append(cars, &a)
 	}
-	return articles, nil
+	return cars, nil
+}
+
+//Get all request and helper for FindByID
+func (cr *ArticleRepository) SelectOne(id string) (*models.Car, error) {
+	query := fmt.Sprintf("SELECT * FROM %s WHERE mark=$1", carTebleName)
+	row := cr.store.db.QueryRow(query, id)
+	a := models.Car{}
+	err := row.Scan(&a.Mark, &a.MaxSpeed, &a.Distance, &a.Handler, &a.Stock)
+	if err != nil {
+		return nil, err
+	}
+	return &a, nil
 }

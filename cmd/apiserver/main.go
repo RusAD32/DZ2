@@ -4,8 +4,8 @@ import (
 	"flag"
 	"log"
 
-	"github.com/BurntSushi/toml"
 	"DZ2/internal/app/apiserver"
+	"github.com/BurntSushi/toml"
 )
 
 var (
@@ -25,6 +25,7 @@ func main() {
 	if err != nil {
 		log.Println("can not find path to config, app will use default confs:", err)
 	}
+	log.Println(config.Dealership)
 
 	//server instance
 	s := apiserver.New(config)
